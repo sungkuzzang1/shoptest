@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	<insert id="signup">
+	 INSERT INTO TBL_MEMBER(USERID, 
+	 						USERPASS, 
+	 						USERNAME, 
+	 						USERPHON)
+	  				VALUES(#{userId}, 
+	  					   #{userPass}, 
+	  					   #{userName}, 
+	  					   #{userPhon}) 
+	</insert>
+	
+	<select id="idChk" resultType="int">
+		SELECT COUNT(*) FROM TBL_MEMBER
+		WHERE USERID = #{userId}
+	</select>
+	
+	<select id="login" resultType="com.gu.shop.vo.MemberVO">
+		SELECT USERID,
+			   USERPASS,
+			   USERNAME,
+			   USERPHON,
+			   USERADDR1,
+			   USERADDR2,
+			   USERADDR3,
+			   REGIDATE,
+			   VERIFY
+		FROM TBL_MEMBER
+		WHERE USERID = #{userId}
+	</select>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMapper">
+	<select id="category" resultType="com.gu.shop.vo.CategoryVO">
+	 SELECT	LEVEL, 
+	 		CATENAME, 
+	 		CATECODE, 
+	 		CATECODEREF
+ 	 FROM GOODS_CATEGORY
+     	START WITH CATECODEREF IS NULL CONNECT BY PRIOR CATECODE = CATECODEREF
+	</select>
+	
+	<insert id="register">
+	 INSERT INTO TBL_GOODS (GDSNUM, 
+	 						GDSNAME, 
+	 						CATECODE, 
+	 						GDSPRICE, 
+	 						GDSSTOCK, 
+	 						GDSDES,
+	 						GDSIMG,
+	 						GDSTHUMBIMG)
+	     			VALUES (TBL_GOODS_SEQ.NEXTVAL, 
+	     					#{gdsName}, 
+	     					#{cateCode}, 
+	     					#{gdsPrice}, 
+	     					#{gdsStock}, 
+	     					#{gdsDes},
+	     					#{gdsImg}, 
+	     					#{gdsThumbImg})
+	</insert>
+	
+	<select id="goodslist" resultType="com.gu.shop.vo.GoodsViewVO">
+	 SELECT	G.GDSNUM, 
+	 		G.GDSNAME, 
+	 		G.CATECODE, 
+	 		C.CATECODEREF, 
+	 		C.CATENAME, 
+	 		GDSPRICE, 
+	 		GDSSTOCK, 
+	 		GDSDES, 
+	 		GDSIMG, 
+	 		GDSDATE,
+     		G.GDSIMG, 
+     		G.GDSTHUMBIMG
+         FROM TBL_GOODS G
+             INNER JOIN GOODS_CATEGORY C
+                 ON G.CATECODE = C.CATECODE
+                 ORDER BY GDSNUM DESC	                         
+	</select>
+	
+	<select id="goodsView" resultType="com.gu.shop.vo.GoodsViewVO">
+	 SELECT G.GDSNUM, 
+	 		G.GDSNAME, 
+	 		G.CATECODE,
+	 		C.CATECODEREF,
+	 		C.CATENAME, 
+	 		GDSPRICE, 
+	 		GDSSTOCK, 
+	 		GDSDES, 
+	 		GDSIMG, 
+	 		GDSDATE,
+	 		G.GDSIMG,
+	 		G.GDSTHUMBIMG	 		
+	   FROM TBL_GOODS G 
+	   	INNER JOIN GOODS_CATEGORY C
+	   	ON G.CATECODE = C.CATECODE
+	    WHERE G.GDSNUM = #{gdsNum}
+	</select>
+	
+	<update id="goodsModify">
+	 UPDATE TBL_GOODS
+	 	SET	GDSNAME = #{gdsName},
+	        CATECODE = #{cateCode},
+	        GDSPRICE = #{gdsPrice},
+	        GDSSTOCK = #{gdsStock},
+	        GDSDES = #{gdsDes},
+	        GDSIMG = #{gdsImg},
+	        GDSTHUMBIMG = #{gdsThumbImg}
+	  WHERE GDSNUM = ${gdsNum}
+	</update>
+	
+	<delete id="goodsDelete">
+	 DELETE	TBL_GOODS
+	 	WHERE GDSNUM = #{gdsNum}
+	</delete>
+</mapper>
