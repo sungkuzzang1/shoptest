@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopMapper">
+	<select id="list1" resultType="com.gu.shop.vo.GoodsViewVO">
+		SELECT	G.GDSNUM, 
+				G.GDSNAME, 
+				G.CATECODE, 
+				C.CATECODEREF, 
+				C.CATENAME, 
+				GDSPRICE, 
+				GDSSTOCK, 
+				GDSDES, 
+				GDSIMG, 
+				GDSDATE, 
+				G.GDSIMG, 
+				G.GDSTHUMBIMG
+	        FROM TBL_GOODS G
+	            INNER JOIN GOODS_CATEGORY C
+	                ON G.CATECODE = C.CATECODE           
+	            WHERE G.CATECODE = #{cateCode}
+	            OR C.CATECODEREF = #{cateCodeRef}
+	            ORDER BY GDSNUM DESC
+	</select>
+	
+	<select id="list2" resultType="com.gu.shop.vo.GoodsViewVO">
+		SELECT	G.GDSNUM, 
+				G.GDSNAME, 
+				G.CATECODE, 
+				C.CATECODEREF, 
+				C.CATENAME, 
+				GDSPRICE, 
+				GDSSTOCK, 
+				GDSDES, 
+				GDSIMG, 
+				GDSDATE, 
+				G.GDSIMG, 
+				G.GDSTHUMBIMG
+	        FROM TBL_GOODS G
+	            INNER JOIN GOODS_CATEGORY C
+	                ON G.CATECODE = C.CATECODE           
+	            WHERE G.CATECODE = #{cateCode}
+	            ORDER BY GDSNUM DESC
+	</select>
+	
+	<insert id="registReply">
+		INSERT INTO TBL_REPLY ( GDSNUM, 
+								USERID, 
+								REPNUM, 
+								REPCON) 
+					VALUES ( #{gdsNum},
+	     					 #{userId}, 
+	     					 TBL_REPLY_SEQ.NEXTVAL, 
+	     					 #{repCon})
+	</insert>
+	
+	<select id="replyList" resultType="com.gu.shop.vo.ReplyListVO">
+		SELECT	R.GDSNUM, 
+				R.USERID, 
+				R.REPNUM, 
+				R.REPCON, 
+				R.REPDATE, 
+				M.USERNAME 
+		FROM TBL_REPLY R
+		 INNER JOIN TBL_MEMBER M
+		  ON R.USERID = M.USERID
+	     WHERE GDSNUM = #{gdsNum}
+	</select>
+	
+	<insert id="addCart">
+		INSERT INTO TBL_CART (	CARTNUM, 
+								USERID, 
+								GDSNUM, 
+								CARTSTOCK)
+     					VALUES (TBL_CART_SEQ.NEXTVAL, 
+     							#{userId}, 
+     							#{gdsNum}, 
+     							#{cartStock})
+	</insert>
+	
+	<select id="cartList" resultType="com.gu.shop.vo.CartListVO">
+		SELECT
+			ROW_NUMBER() OVER(ORDER BY C.CARTNUM DESC) AS NUM,
+	     	C.CARTNUM, C.USERID, C.GDSNUM, C.CARTSTOCK, C.ADDDATE, 
+	     	G.GDSNAME, G.GDSPRICE, G.GDSTHUMBIMG
+	 	FROM TBL_CART C 
+	 		INNER JOIN TBL_GOODS G
+	         ON C.GDSNUM = G.GDSNUM   
+	     	WHERE C.USERID = #{userId}
+	</select>
+</mapper>

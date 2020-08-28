@@ -12,10 +12,17 @@ public class GoodsViewVO {
 	private String gdsImg;
 	private Date gdsDate;
 	private String gdsThumbImg;
-		
+	private int level;
+	
 	private String cateCodeRef;
 	private String cateName;
 	
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}	
 	public String getGdsThumbImg() {
 		return gdsThumbImg;
 	}

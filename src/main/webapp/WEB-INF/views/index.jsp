@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="./inc/header.jsp" %>
 <style>
-	.container{position: absolute;width:600px;height:720px;left:0;right:0;top:0;bottom:0;margin:auto}
+	.container{width:600px;height:720px;left:0;right:0;top:0;bottom:0;margin:0 auto;padding-top:250px}
 	.content{width:600px;margin:0 auto;box-sizing:border-box;padding:60px 100px;background:#eee}
 	.logo_wrap{text-align:center;margin-bottom:30px}
 	.id_pw_area > div{margin-bottom:15px}
